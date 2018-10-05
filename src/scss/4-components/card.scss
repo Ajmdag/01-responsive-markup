@@ -1,0 +1,30 @@
+.card {
+	background-color: $c-card-background;
+	border-radius: 20px;
+	cursor: pointer;
+	padding: 15px 20px;
+	color: $c-font-text;
+
+	&:hover {
+		box-shadow: 0 2px 6px 0 rgba(197, 186, 186, 0.5);
+	}
+
+	&--small {
+		@media #{$m-from-laptop} {
+			grid-column: span 2;
+		}
+	}
+
+	&--medium {
+		@media #{$m-from-laptop} {
+			grid-column: span 3;
+		}
+	}
+
+	&--large {
+		@media #{$m-from-laptop} {
+			grid-column: span 4;
+			grid-row: span 3;
+		}
+	}
+}

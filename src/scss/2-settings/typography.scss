@@ -1,0 +1,17 @@
+body {
+	font-family: Arial, $f-sans-serif;
+	color: $c-font-text;
+	font-weight: 700;
+	line-height: 1.15;
+	font-size: 16px;
+}
+
+h1 {
+	font-size: 24px;
+	line-height: 1.16;
+}
+
+p.status-text {
+	font-size: 12px;
+	line-height: 1.16;
+}

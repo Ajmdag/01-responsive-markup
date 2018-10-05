@@ -1,0 +1,22 @@
+.burger {
+	z-index: 1;
+	cursor: pointer;
+	height: 16px;
+
+	@media (min-width: 600px) {
+		display: none;
+	}
+
+	&__line {
+		display: block;
+		width: 16px;
+		height: 3px;
+		background-color: $c-font-text;
+		border-radius: 1px;
+		transition: 0.1s all;
+
+		&:not(:last-child) {
+			margin-bottom: 3px;
+		}
+	}
+}

@@ -1,0 +1,58 @@
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	position: relative;
+	padding: 12px 20px;
+	margin-bottom: 15px;
+
+	@media #{$m-from-laptop} {
+		padding: 26px 40px;
+	}
+
+	&:after {
+		position: absolute;
+		content: '';
+		display: none;
+
+		@media #{$m-from-laptop} {
+			height: 1px;
+			display: block;
+			width: 100%;
+			background-color: $c-hr-line;
+			bottom: 0;
+			left: 0;
+		}
+	}
+
+	&__logo {
+		@media #{$m-from-vertical-tablet} {
+			margin-right: 50px;
+		}
+	}
+
+	&__checkbox {
+		@include visually-hidden;
+
+		&:checked ~ .header__nav {
+			transform: translateY(0);
+			z-index: 1;
+		}
+
+		&:checked ~ .header__burger {
+			.burger__line {
+				&:nth-child(1) {
+					transform: translate(0, 5px) rotate(45deg);
+				}
+
+				&:nth-child(2) {
+					display: none;
+				}
+
+				&:nth-child(3) {
+					transform: translate(0, -1px) rotate(-45deg);
+				}
+			}
+		}
+	}
+}

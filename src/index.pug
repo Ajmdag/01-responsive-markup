@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+html
+	head
+		meta(charset="UTF-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1.0")
+		meta(http-equiv="X-UA-Compatible", content="ie=edge")
+		meta(name="robots" content="noindex")
+		link(rel="shortcut icon" href="")
+		link(rel="stylesheet", href="styles/main.css")
+		title Title
+	body.page
+
+		template.card-template.card-template--small
+			div.card.card--small small
+				.card__header.card--small__header
+					img(src="", alt="")
+					p.card__title.card--small__title
+				.card__status.card--small__status
+					p.status-text.card__object.card--small__object
+					p.status-text.card__time.card--small__time
+
+		template.card-template.card-template--medium
+			div.card.card--medium medium
+
+		template.card-template.card-template--large
+			div.card.card--large large
+
+
+		header.page__header.header
+			a.header__logo(href="#")
+				img(src="./assets/YandexHome.svg", alt="")
+
+			input.header__checkbox#header-burger(type="checkbox")
+			nav.header__nav.nav
+				ul.nav__list
+					li.nav__item
+						a.nav__link.active(href="#") События
+					li.nav__item
+						a.nav__link(href="#") Сводка
+					li.nav__item
+						a.nav__link(href="#") Устройства
+					li.nav__item
+						a.nav__link(href="#") Сценарии
+
+			label(for="header-burger").header__burger.burger
+				span.burger__line
+				span.burger__line
+				span.burger__line
+
+		main.content(role="main")
+			h1.content__title Лента событий
+
+			.content-wrap
+
+
+		footer.footer fsedfs
+
+	script(src="./js/main.js")

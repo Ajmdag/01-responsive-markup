@@ -1,0 +1,9 @@
+.content-wrap {
+	display: grid;
+	grid-gap: 16px;
+	grid-template-columns: 1fr;
+
+	@media #{$m-from-laptop} {
+		grid-template-columns: repeat(6, 1fr);
+	}
+}

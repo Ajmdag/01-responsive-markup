@@ -1,0 +1,53 @@
+.nav {
+	transition: 0.3s all;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background-color: $background-white;
+	transform: translateY(-100%);
+	padding: 30px 20px;
+
+	@media (min-width: 600px) {
+		padding: 0;
+	}
+
+	@media (min-width: 600px) {
+		position: static;
+		transform: none;
+	}
+
+	&__list {
+		width: 100%;
+
+		@media (min-width: 600px) {
+			margin: 0 auto;
+		}
+	}
+
+	&__item {
+		display: block;
+		text-align: center;
+
+		&:not(:last-child) {
+			margin-bottom: 15px;
+			margin-right: 0;
+
+			@media (min-width: 600px) {
+				margin-right: 25px;
+				margin-bottom: 0;
+			}
+		}
+
+		@media (min-width: 600px) {
+			text-align: left;
+			display: inline-block;
+		}
+	}
+
+	&__link {
+		&:not(.active) {
+			color: $c-font-lightgray;
+		}
+	}
+}
