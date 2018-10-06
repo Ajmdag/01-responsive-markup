@@ -4,49 +4,47 @@ const largeTemplate = document.querySelector('.card-template--large')
 
 const contentWrap = document.querySelector('.content-wrap')
 
+// const fillCardContent = size => {
+// 	switch (size) {
+// 		case 's':
+// 			contentWrap.appendChild(smallTemplate.content.cloneNode(true))
+// 			break
+// 		case 'm':
+// 			contentWrap.appendChild(mediumTemplate.content.cloneNode(true))
+// 			break
+// 		case 'l':
+// 			contentWrap.appendChild(largeTemplate.content.cloneNode(true))
+// 			break
+// 	}
+// }
+
 fetch('./js/data/events.json')
 	.then((response) => response.json())
 	.then((json) => {
 		for (let i = 0; i < json.events.length; i++) {
-			switch (json.events[i].size) {
+			const thisItem = json.events[i]
+			switch (thisItem.size) {
 				case 's':
-					contentWrap.appendChild(smallTemplate.content.cloneNode(true))
-					console.log('works1')
+					smallTemplate.content.querySelector('.card__logo').src = `./assets/${thisItem.icon}.svg`
+					smallTemplate.content.querySelector('.card__title').innerHTML = thisItem.title
+					smallTemplate.content.querySelector('.card__source').innerHTML = thisItem.source
+					smallTemplate.content.querySelector('.card__time').innerHTML = thisItem.time
+					contentWrap.appendChild(document.importNode(smallTemplate.content, true))
 					break
 				case 'm':
-					contentWrap.appendChild(mediumTemplate.content.cloneNode(true))
-					console.log('works2')
+					mediumTemplate.content.querySelector('.card__logo').src = `./assets/${thisItem.icon}.svg`
+					mediumTemplate.content.querySelector('.card__title').innerHTML = thisItem.title
+					mediumTemplate.content.querySelector('.card__source').innerHTML = thisItem.source
+					mediumTemplate.content.querySelector('.card__time').innerHTML = thisItem.time
+					contentWrap.appendChild(document.importNode(mediumTemplate.content, true))
 					break
 				case 'l':
-					contentWrap.appendChild(largeTemplate.content.cloneNode(true))
-					console.log('works3')
+					largeTemplate.content.querySelector('.card__logo').src = `./assets/${thisItem.icon}.svg`
+					largeTemplate.content.querySelector('.card__title').innerHTML = thisItem.title
+					largeTemplate.content.querySelector('.card__source').innerHTML = thisItem.source
+					largeTemplate.content.querySelector('.card__time').innerHTML = thisItem.time
+					contentWrap.appendChild(document.importNode(largeTemplate.content, true))
 					break
-			}
-			switch (json.events[i].source) {
-				case 'Сенсоры потребления':
-					console.log('works')
-					break
-				case 'Сенсор входной двери':
-					break
-				case 'Пылесос':
-					break
-				case 'Роутер':
-					break
-				case 'Сенсор микроклимата':
-					break
-				case 'Кондиционер':
-					break
-				case 'Яндекс.Станция':
-					break
-				case 'Холодильник':
-					break
-				case 'Оконный сенсор':
-					break
-				case 'Сенсор движения':
-					break
-				case 'Вода вскипела':
-					break
-				default:
 			}
 		}
 	})

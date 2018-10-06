@@ -1,6 +1,8 @@
 html,
 body {
-	height: 100%;
+	@media #{$m-from-laptop} {
+		height: 100%;
+	}
 }
 
 body {
