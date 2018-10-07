@@ -14,4 +14,12 @@ h1 {
 p.status-text {
 	font-size: 12px;
 	line-height: 1.16;
+
+	@media #{$m-from-tablet} {
+		font-size: 14px;
+	}
+
+	@media #{$m-from-laptop} {
+		font-size: 18px;
+	}
 }

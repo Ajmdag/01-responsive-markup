@@ -1,9 +1,16 @@
 .content-wrap {
 	display: grid;
 	grid-gap: 16px;
+	grid-auto-flow: dense;
 	grid-template-columns: 1fr;
+
+	@media #{$m-from-tablet} {
+		max-width: 1030px;
+		margin: 0 auto;
+	}
 
 	@media #{$m-from-laptop} {
 		grid-template-columns: repeat(6, 1fr);
+		grid-gap: 20px;
 	}
 }

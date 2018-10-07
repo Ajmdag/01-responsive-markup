@@ -1,30 +1,221 @@
 .card {
-	background-color: $c-card-background;
 	border-radius: 20px;
-	cursor: pointer;
-	padding: 15px 20px;
+	background-color: $c-card-background;
 	color: $c-font-text;
+	display: flex;
+	flex-direction: column;
+	position: relative;
 
 	&:hover {
 		box-shadow: 0 2px 6px 0 rgba(197, 186, 186, 0.5);
+
+		&:after {
+			position: absolute;
+			content: url('../assets/cross-white.svg');
+			display: block;
+		}
+
+		&:before {
+			position: absolute;
+			content: url('../assets/next-white.svg');
+			display: block;
+		}
 	}
 
 	&--small {
+		@media #{$m-from-tablet} {
+			grid-column: span 1;
+		}
 		@media #{$m-from-laptop} {
 			grid-column: span 2;
 		}
 	}
 
 	&--medium {
+		@media #{$m-from-tablet} {
+			grid-column: span 2;
+		}
 		@media #{$m-from-laptop} {
 			grid-column: span 3;
 		}
 	}
 
 	&--large {
+		@media #{$m-from-tablet} {
+			grid-column: span 2;
+		}
 		@media #{$m-from-laptop} {
 			grid-column: span 4;
 			grid-row: span 3;
+		}
+	}
+
+	&__header-wrap {
+		padding: 20px 15px;
+		border-radius: 20px;
+		background-color: $c-card-background;
+
+		@media #{$m-from-laptop} {
+			padding: 20px 25px;
+		}
+
+		&.critical {
+			background-color: $c-card-background-error;
+			border-radius: 20px 20px 0 0;
+			padding-bottom: 20px;
+			position: relative;
+			color: $white;
+
+			&:after {
+				position: absolute;
+				content: '';
+				bottom: -20px;
+				left: 0;
+				width: 100%;
+				height: 20px;
+				background-color: $c-card-background-error;
+			}
+		}
+
+		&.critical.have-description {
+			padding-bottom: 20px;
+		}
+
+		&.have-description {
+			border-radius: 20px 20px 0 0;
+			padding-bottom: 0;
+		}
+
+		&.critical ~ .card__description {
+			border-radius: 20px;
+		}
+	}
+
+	&__header {
+		display: flex;
+		align-items: center;
+		margin-bottom: 15px;
+	}
+
+	&__logo {
+		margin-right: 15px;
+		width: 35px;
+
+		@media #{$m-from-tablet} {
+			width: 40px;
+		}
+
+		@media #{$m-from-laptop} {
+			width: 48px;
+		}
+	}
+
+	&__title {
+		font-size: 14px;
+
+		@media #{$m-from-tablet} {
+			font-size: 20px;
+		}
+
+		@media #{$m-from-laptop} {
+			font-size: 24px;
+		}
+	}
+
+	&__status {
+		display: flex;
+		justify-content: space-between;
+		font-weight: 400;
+
+		@media #{$m-from-laptop} {
+			flex-direction: column;
+		}
+	}
+
+	&__source {
+		&:first-child {
+			@media #{$m-from-laptop} {
+				margin-bottom: 20px;
+			}
+		}
+	}
+
+	&__description-paragraph {
+		font-size: 24px;
+	}
+
+	&__description {
+		background-color: $c-card-background;
+		padding: 20px 15px;
+		z-index: 1;
+		border-radius: 0 0 20px 20px;
+		font-size: 18px;
+		line-height: 1.22;
+		font-weight: 400;
+		margin-top: auto;
+
+		@media #{$m-from-laptop} {
+			padding: 20px;
+		}
+	}
+
+	&__image {
+		width: 100%;
+		border-radius: 20px;
+		margin-top: 15px;
+	}
+
+	&__data {
+		&--air {
+			display: flex;
+			justify-content: space-between;
+			font-size: 14px;
+			margin-top: 25px;
+
+			@media #{$m-from-laptop} {
+				font-size: 18px;
+			}
+		}
+
+		&--button-yes {
+			background-color: $c-button-yes;
+			margin-right: 40px;
+
+			@media #{$m-from-laptop} {
+				margin-right: 18px;
+			}
+		}
+
+		&--button-no {
+			background-color: $c-button-no;
+		}
+	}
+
+	&__data-buttons-container {
+		display: flex;
+		justify-content: space-between;
+
+		@media #{$m-from-vertical-tablet} {
+			justify-content: space-around;
+		}
+
+		@media #{$m-from-laptop} {
+			justify-content: flex-start;
+		}
+	}
+
+	&__data-button {
+		padding: 10px 0;
+		width: 100%;
+		text-align: center;
+		max-width: 120px;
+		border-radius: 8px;
+		margin-top: 25px;
+		cursor: pointer;
+
+		@media #{$m-from-laptop} {
+			font-size: 20px;
+			font-weight: bold;
 		}
 	}
 }

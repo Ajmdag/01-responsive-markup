@@ -2,11 +2,20 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	position: relative;
 	padding: 12px 20px;
-	margin-bottom: 15px;
+	position: fixed;
+	background-color: $white;
+	z-index: 2;
+	width: 100%;
+	min-height: 75px;
+
+	@media #{$m-from-tablet} {
+		z-index: auto;
+		position: relative;
+	}
 
 	@media #{$m-from-laptop} {
+		margin-bottom: 15px;
 		padding: 26px 40px;
 	}
 
