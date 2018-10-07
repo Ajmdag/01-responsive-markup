@@ -62,7 +62,7 @@
 
 			&:hover {
 				&:before {
-					bottom: 7px;
+					bottom: 5px;
 				}
 			}
 		}
@@ -108,6 +108,12 @@
 				width: 100%;
 				height: 20px;
 				background-color: $c-card-background-error;
+			}
+		}
+
+		&--small .card__status {
+			@media #{$m-from-laptop} {
+				flex-direction: column;
 			}
 		}
 
@@ -161,10 +167,6 @@
 		display: flex;
 		justify-content: space-between;
 		font-weight: 400;
-
-		@media #{$m-from-laptop} {
-			flex-direction: column;
-		}
 	}
 
 	&__source {
@@ -176,7 +178,21 @@
 	}
 
 	&__description-paragraph {
-		font-size: 24px;
+		font-size: 18px;
+		margin-bottom: 25px;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		@media #{$m-from-tablet} {
+			font-size: 20px;
+		}
+
+		@media #{$m-from-laptop} {
+			margin-bottom: 30px;
+			font-size: 24px;
+		}
 	}
 
 	&__description {
@@ -194,10 +210,16 @@
 		}
 	}
 
+	&__image-container {
+		overflow: hidden;
+		border-radius: 20px;
+		margin-top: 15px;
+	}
+
 	&__image {
 		width: 100%;
 		border-radius: 20px;
-		margin-top: 15px;
+		touch-action: none;
 	}
 
 	&__data {
@@ -245,12 +267,11 @@
 		text-align: center;
 		max-width: 120px;
 		border-radius: 8px;
-		margin-top: 25px;
 		cursor: pointer;
+		font-weight: bold;
 
 		@media #{$m-from-laptop} {
 			font-size: 20px;
-			font-weight: bold;
 		}
 	}
 }

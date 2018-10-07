@@ -304,13 +304,16 @@ for (let i = 0; i < eventsObject.events.length; i++) {
 			// Добавление картинки
 			let largeDataImage
 			if (thisItem.data.type === 'graph') {
-				largeDataImage = document.createElement('img')
-				largeDataImage.classList.add('card__image')
-				largeDataImage.src = './assets/richdata.svg'
+				largeDataImage = document.createElement('div')
+				largeDataImage.classList.add('card__image-container')
+				largeDataImage.innerHTML = `<img
+				src="./assets/richdata.svg"
+				class="card__image">`
 			}
 
 			if (thisItem.data.image) {
 				largeDataImage = document.createElement('div')
+				largeDataImage.classList.add('card__image-container')
 				largeDataImage.innerHTML = `<img
 						class="card__image"
 						id="hoover"
