@@ -21,22 +21,22 @@ gulp.task('styles', () =>
 		.pipe(autoprefixer())
 		.pipe(gulpIf(!isDevelopment, cleanCSS({ compatibility: 'ie8' })))
 		.pipe(gulpIf(isDevelopment, sourcemaps.write()))
-		.pipe(gulp.dest('./dist/styles'))
+		.pipe(gulp.dest('./docs/styles'))
 )
 
 // Копирование файлов из папки assets
-gulp.task('assets', () => gulp.src('./src/assets/**/**').pipe(gulp.dest('./dist/assets')))
+gulp.task('assets', () => gulp.src('./src/assets/**/**').pipe(gulp.dest('./docs/assets')))
 
 // Компилияция pug
 gulp.task('pug', () =>
 	gulp
 		.src('./src/index.pug')
 		.pipe(pug())
-		.pipe(gulp.dest('./dist'))
+		.pipe(gulp.dest('./docs'))
 )
 
-// Удаление папки для публикации проекта (dist)
-gulp.task('clean', () => del('dist'))
+// Удаление папки для публикации проекта (docs)
+gulp.task('clean', () => del('docs'))
 
 gulp.task('scripts', () =>
 	gulp
@@ -47,11 +47,11 @@ gulp.task('scripts', () =>
 			})
 		)
 		.pipe(browserify({ debug: true }))
-		.pipe(gulp.dest('./dist/js'))
+		.pipe(gulp.dest('./docs/js'))
 )
 
 gulp.task('copyJSON', () => {
-	return gulp.src('./src/js/data/**').pipe(gulp.dest('./dist/js/data'))
+	return gulp.src('./src/js/data/**').pipe(gulp.dest('./docs/js/data'))
 })
 
 // Слежка => перекомпиляция и копирование при изменении
@@ -66,10 +66,10 @@ gulp.task('watch', () => {
 // Запуск локального сервера browserSync
 gulp.task('serve', () => {
 	browserSync.init({
-		server: './dist'
+		server: './docs'
 	})
 
-	browserSync.watch('./dist/**/**').on('change', browserSync.reload)
+	browserSync.watch('./docs/**/**').on('change', browserSync.reload)
 })
 
 gulp.task('dev', gulp.parallel('pug', 'styles', 'assets', 'scripts'))
