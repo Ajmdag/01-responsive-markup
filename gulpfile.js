@@ -10,8 +10,7 @@ const babel = require('gulp-babel')
 const browserify = require('gulp-browserify')
 const browserSync = require('browser-sync').create()
 
-const isDevelopment =
-	!process.env.NODE_ENV || process.env.NODE_ENV == 'development'
+const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development'
 
 // Компиляция scss
 gulp.task('styles', () =>
@@ -26,9 +25,7 @@ gulp.task('styles', () =>
 )
 
 // Копирование файлов из папки assets
-gulp.task('assets', () =>
-	gulp.src('./src/assets/**/**').pipe(gulp.dest('./dist/assets'))
-)
+gulp.task('assets', () => gulp.src('./src/assets/**/**').pipe(gulp.dest('./dist/assets')))
 
 // Компилияция pug
 gulp.task('pug', () =>
@@ -64,7 +61,6 @@ gulp.task('watch', () => {
 	gulp.watch('./src/assets/**/**', gulp.series('assets'))
 	gulp.watch('./src/js/modules/**', gulp.series('scripts'))
 	gulp.watch('./src/js/main.js', gulp.series('scripts'))
-	gulp.watch('./src/js/data/**', gulp.series('copyJSON'))
 })
 
 // Запуск локального сервера browserSync
@@ -76,12 +72,6 @@ gulp.task('serve', () => {
 	browserSync.watch('./dist/**/**').on('change', browserSync.reload)
 })
 
-gulp.task(
-	'dev',
-	gulp.parallel('pug', 'styles', 'assets', 'scripts', 'copyJSON')
-)
+gulp.task('dev', gulp.parallel('pug', 'styles', 'assets', 'scripts'))
 
-gulp.task(
-	'default',
-	gulp.series('clean', 'dev', gulp.parallel('watch', 'serve'))
-)
+gulp.task('default', gulp.series('clean', 'dev', gulp.parallel('watch', 'serve')))
