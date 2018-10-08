@@ -231,6 +231,11 @@
 
 			@media #{$m-from-laptop} {
 				font-size: 18px;
+				justify-content: flex-start;
+
+				p:first-child {
+					margin-right: 50px;
+				}
 			}
 		}
 
