@@ -314,6 +314,7 @@ for (let i = 0; i < eventsObject.events.length; i++) {
 			if (thisItem.data.image) {
 				largeDataImage = document.createElement('div')
 				largeDataImage.classList.add('card__image-container')
+				largeDataImage.setAttribute('id', 'hoover-container')
 				largeDataImage.innerHTML = `<img
 						class="card__image"
 						id="hoover"
