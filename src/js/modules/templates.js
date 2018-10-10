@@ -318,6 +318,8 @@ for (let i = 0; i < eventsObject.events.length; i++) {
 				largeDataImage.innerHTML = `<img
 						class="card__image"
 						id="hoover"
+						touch-action="none"
+						style="touch-action: none;"
 						srcset="./assets/bitmap.png 768w,
 						./assets/bitmap2x.png 1366w,
 						./assets/bitmap3x.png 1920w"
