@@ -1,10 +1,10 @@
 # 01-responsive-markup
 
 ```sh
-git clone https://github.com/Ajmdag/01-responsive-markup.git
-cd 01-responsive-markup
-npm install
-gulp
+$ git clone https://github.com/Ajmdag/01-responsive-markup.git
+$ cd 01-responsive-markup
+$ npm install
+$ gulp
 ```
 
 Откроется вкладка в браузере на http://localhost:3000/
