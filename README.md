@@ -1,7 +1,7 @@
 # 01-responsive-markup
 
 ## Запуск
-```
+```sh
 npm install
 gulp
 ```
