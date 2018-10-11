@@ -1,0 +1,14 @@
+include ./header
+include ./footer
+
+block pageInfo
+
+<!DOCTYPE html>
+html
+	include ../components/head
+	body.page
+		+header()
+		block content
+		+footer()
+		block scripts
+			script(src="./js/main.js")

@@ -1,0 +1,45 @@
+extends ../layout/main
+
+block pageInfo
+	-
+		page = {
+			activeLinkIndex: 0,
+			menuPaths: ['#', '#', '#', '#', './video-observation.html']
+		}
+
+block content
+
+	template.card-template.card-template--small
+		div.card.card--small
+			.card__header-wrap.card__header-wrap--small
+				.card__header.card__header--small
+					img.card__logo.card__logo--small(src="", alt="")
+					p.card__title.card__title--small
+				.card__status.card__status--small
+					p.status-text.card__source.card__source--small
+					p.status-text.card__time.card__time--small
+
+	template.card-template.card-template--medium
+		div.card.card--medium
+			.card__header-wrap.card__header-wrap--medium
+				.card__header.card__header--medium
+					img.card__logo.card__logo--medium(src="", alt="")
+					p.card__title.card__title--medium
+				.card__status.card__status--medium
+					p.status-text.card__source.card__source--medium
+					p.status-text.card__time.card__time--medium
+
+	template.card-template.card-template--large
+		div.card.card--large
+			.card__header-wrap.card__header-wrap--large
+				.card__header.card__header--large
+					img.card__logo.card__logo--large(src="", alt="")
+					p.card__title.card__title--large
+				.card__status.card__status--large
+					p.status-text.card__source.card__source--large
+					p.status-text.card__time.card__time--large
+
+	main.content(role="main")
+		h1.content__title Лента событий
+
+		.content-wrap

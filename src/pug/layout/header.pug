@@ -1,0 +1,21 @@
+mixin header
+	header.page__header.header
+		a.header__logo(href="#")
+			img(src="./assets/YandexHome.svg", alt="")
+
+		input.header__checkbox#header-burger(type="checkbox")
+		nav.header__nav.nav
+			ul.nav__list
+				- menuItems = ['События', 'Сводка', 'Устройства', 'Сценарии', 'Видеонаблюдение'];
+				each item, index in menuItems
+					if (index === page.activeLinkIndex)
+						li.nav__item
+							a.nav__link.active(href="#")= item
+					else
+						li.nav__item
+							a.nav__link(href= page.menuPaths[index])= item
+
+		label(for="header-burger").header__burger.burger
+			span.burger__line
+			span.burger__line
+			span.burger__line

@@ -30,7 +30,7 @@ gulp.task('assets', () => gulp.src('./src/assets/**/**').pipe(gulp.dest('./docs/
 // Компилияция pug
 gulp.task('pug', () =>
 	gulp
-		.src('./src/index.pug')
+		.src('./src/pug/pages/*.pug')
 		.pipe(pug())
 		.pipe(gulp.dest('./docs'))
 )
@@ -57,7 +57,7 @@ gulp.task('copyJSON', () => {
 // Слежка => перекомпиляция и копирование при изменении
 gulp.task('watch', () => {
 	gulp.watch('./src/scss/**/**', gulp.series('styles'))
-	gulp.watch('./src/pug/index.pug', gulp.series('pug'))
+	gulp.watch('./src/pug/**/**', gulp.series('pug'))
 	gulp.watch('./src/assets/**/**', gulp.series('assets'))
 	gulp.watch('./src/js/modules/**', gulp.series('scripts'))
 	gulp.watch('./src/js/main.js', gulp.series('scripts'))
@@ -66,7 +66,7 @@ gulp.task('watch', () => {
 // Запуск локального сервера browserSync
 gulp.task('serve', () => {
 	browserSync.init({
-		server: './docs'
+		server: './docs/'
 	})
 
 	browserSync.watch('./docs/**/**').on('change', browserSync.reload)
