@@ -1,5 +1,9 @@
 # 01-responsive-markup
 
+# Requirements
+ - Node.js - v10.10.0
+
+
 ```
 git clone https://github.com/Ajmdag/01-responsive-markup.git
 cd 01-responsive-markup
