@@ -1,5 +1,8 @@
 extends ../layout/main
 
+append styles
+	link(rel="stylesheet", href="./styles/video-observation.css")
+
 block pageInfo
 	-
 		page = {
@@ -9,4 +12,16 @@ block pageInfo
 
 block content
 
-	main.content(role="main")
+	main.content.videos-wrap(role="main")
+		.videos-wrap__video-container
+			video#video-1.videos-wrap__video(muted)
+		.videos-wrap__video-container
+			video#video-2.videos-wrap__video(muted)
+		.videos-wrap__video-container
+			video#video-3.videos-wrap__video(muted)
+		.videos-wrap__video-container
+			video#video-4.videos-wrap__video(muted)
+
+block scripts
+	script(src="https://cdn.jsdelivr.net/npm/hls.js@latest")
+	script(src="./js/video-observation.js")

@@ -1,5 +1,8 @@
 extends ../layout/main
 
+append styles
+	link(rel="stylesheet", href="./styles/events.css")
+
 block pageInfo
 	-
 		page = {
@@ -42,4 +45,7 @@ block content
 	main.content(role="main")
 		h1.content__title Лента событий
 
-		.content-wrap
+		.events-wrap
+
+block scripts
+	script(src="./js/events.js")

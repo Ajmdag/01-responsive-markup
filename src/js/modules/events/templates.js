@@ -163,7 +163,7 @@ const smallTemplate = document.querySelector('.card-template--small')
 const mediumTemplate = document.querySelector('.card-template--medium')
 const largeTemplate = document.querySelector('.card-template--large')
 
-const contentWrap = document.querySelector('.content-wrap')
+const contentWrap = document.querySelector('.events-wrap')
 
 for (let i = 0; i < eventsObject.events.length; i++) {
 	const thisItem = eventsObject.events[i]

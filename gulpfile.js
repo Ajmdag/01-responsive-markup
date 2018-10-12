@@ -5,6 +5,7 @@ const gulpIf = require('gulp-if')
 const autoprefixer = require('gulp-autoprefixer')
 const pug = require('gulp-pug')
 const cleanCSS = require('gulp-clean-css')
+const minify = require('gulp-minify')
 const del = require('del')
 const babel = require('gulp-babel')
 const browserify = require('gulp-browserify')
@@ -15,7 +16,7 @@ const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'developm
 // Компиляция scss
 gulp.task('styles', () =>
 	gulp
-		.src('./src/scss/main.scss')
+		.src('./src/scss/*.scss')
 		.pipe(gulpIf(isDevelopment, sourcemaps.init()))
 		.pipe(sass())
 		.pipe(autoprefixer())
@@ -38,6 +39,7 @@ gulp.task('pug', () =>
 // Удаление папки для публикации проекта (docs)
 gulp.task('clean', () => del('docs'))
 
+// Компиляция JS
 gulp.task('scripts', () =>
 	gulp
 		.src('./src/js/*.js')
@@ -47,20 +49,26 @@ gulp.task('scripts', () =>
 			})
 		)
 		.pipe(browserify({ debug: true }))
+		.pipe(
+			gulpIf(
+				!isDevelopment,
+				minify({
+					ext: {
+						min: '.js'
+					},
+					noSource: true
+				})
+			)
+		)
 		.pipe(gulp.dest('./docs/js'))
 )
 
-gulp.task('copyJSON', () => {
-	return gulp.src('./src/js/data/**').pipe(gulp.dest('./docs/js/data'))
-})
-
 // Слежка => перекомпиляция и копирование при изменении
 gulp.task('watch', () => {
-	gulp.watch('./src/scss/**/**', gulp.series('styles'))
 	gulp.watch('./src/pug/**/**', gulp.series('pug'))
+	gulp.watch('./src/scss/**/**', gulp.series('styles'))
+	gulp.watch('./src/js/**/**', gulp.series('scripts'))
 	gulp.watch('./src/assets/**/**', gulp.series('assets'))
-	gulp.watch('./src/js/modules/**', gulp.series('scripts'))
-	gulp.watch('./src/js/main.js', gulp.series('scripts'))
 })
 
 // Запуск локального сервера browserSync
