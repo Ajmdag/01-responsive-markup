@@ -1,7 +1,7 @@
 {
-	"name": "Gulp-starter-kit",
+	"name": "SHRI-homework",
 	"version": "1.0.0",
-	"description": "Starter kit for HTML coding / HTML markup",
+	"description": "",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"

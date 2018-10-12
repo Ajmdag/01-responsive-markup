@@ -12,15 +12,24 @@ block pageInfo
 
 block content
 
-	main.content.videos-wrap(role="main")
-		.videos-wrap__video-container
-			video#video-1.videos-wrap__video(muted)
-		.videos-wrap__video-container
-			video#video-2.videos-wrap__video(muted)
-		.videos-wrap__video-container
-			video#video-3.videos-wrap__video(muted)
-		.videos-wrap__video-container
-			video#video-4.videos-wrap__video(muted)
+	main.content(role="main")
+		.videos-wrap
+			.videos-wrap__video-container.videos-wrap__video-container--overflow-hidden
+				video#video-1.videos-wrap__video(muted)
+			.videos-wrap__video-container.videos-wrap__video-container--overflow-hidden
+				video#video-2.videos-wrap__video(muted)
+			.videos-wrap__video-container.videos-wrap__video-container--overflow-hidden
+				video#video-3.videos-wrap__video(muted)
+			.videos-wrap__video-container.videos-wrap__video-container--overflow-hidden
+				video#video-4.videos-wrap__video(muted)
+
+		.videos-wrap__video-settings
+			.videos-wrap__brightness-container
+				p.videos-wrap__brightness-title Яркость:
+				input.videos-wrap__brightness-input(type="range")
+			.videos-wrap__brightness-container
+				p.videos-wrap__contrast-title Контрастность:
+				input.videos-wrap__contrast-input(type="range")
 
 block scripts
 	script(src="https://cdn.jsdelivr.net/npm/hls.js@latest")
