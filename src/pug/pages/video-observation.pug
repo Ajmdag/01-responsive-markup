@@ -23,14 +23,19 @@ block content
 			.videos-wrap__video-container.videos-wrap__video-container--overflow-hidden
 				video#video-4.videos-wrap__video(muted)
 
-		.videos-wrap__video-settings
+		.videos-wrap__video-settings.videos-wrap__video-settings--hidden
+			button.videos-wrap__video-all-cameras Все камеры
 			.videos-wrap__brightness-container
 				p.videos-wrap__brightness-title Яркость:
-				input.videos-wrap__brightness-input(type="range")
+				input.videos-wrap__brightness-input(type="range" value="20" min="3" max="60")
 			.videos-wrap__brightness-container
 				p.videos-wrap__contrast-title Контрастность:
-				input.videos-wrap__contrast-input(type="range")
+				input.videos-wrap__contrast-input(type="range" value="20" min="3" max="60")
+
+			.videos-wrap__audio-detector
+				canvas.visualizer
 
 block scripts
 	script(src="https://cdn.jsdelivr.net/npm/hls.js@latest")
 	script(src="./js/video-observation.js")
+//- .videos-wrap__video-settings--hidden
