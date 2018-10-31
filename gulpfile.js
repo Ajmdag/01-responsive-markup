@@ -5,6 +5,8 @@ const gulpIf = require('gulp-if')
 const autoprefixer = require('gulp-autoprefixer')
 const pug = require('gulp-pug')
 const cleanCSS = require('gulp-clean-css')
+const ts = require('gulp-typescript')
+const tsProject = ts.createProject('tsconfig.json')
 const minify = require('gulp-minify')
 const del = require('del')
 const babel = require('gulp-babel')
@@ -37,39 +39,33 @@ gulp.task('pug', () =>
 )
 
 // Удаление папки для публикации проекта (docs)
-gulp.task('clean', () => del('docs'))
+gulp.task('clean', () => del('docs'));
 
-// Компиляция JS
-gulp.task('scripts', () =>
-	gulp
-		.src('./src/js/*.js')
-		.pipe(
-			babel({
-				presets: ['env']
-			})
-		)
-		.pipe(browserify({ debug: true }))
-		.pipe(
-			gulpIf(
-				!isDevelopment,
-				minify({
-					ext: {
-						min: '.js'
-					},
-					noSource: true
-				})
-			)
-		)
-		.pipe(gulp.dest('./docs/js'))
-)
+// Компиляция ts
+gulp.task('typescript', () => {
+	const tsResult = gulp.src('./src/js/**/*.ts')
+	.pipe(tsProject());
+
+	return tsResult.js
+		.pipe(gulp.dest('./docs/js'));
+});
+
+// browserify
+gulp.task('browserify', () => {
+	return gulp.src('./docs/js/*.js')
+	.pipe(browserify())
+	.pipe(gulp.dest('./docs/js'))
+});
+
+gulp.task('cleanModules', () => del('./docs/js/modules'));
 
 // Слежка => перекомпиляция и копирование при изменении
 gulp.task('watch', () => {
 	gulp.watch('./src/pug/**/**', gulp.series('pug'))
 	gulp.watch('./src/scss/**/**', gulp.series('styles'))
-	gulp.watch('./src/js/**/**', gulp.series('scripts'))
+	gulp.watch('./src/js/**/**', gulp.series('typescript', 'browserify', 'cleanModules'))
 	gulp.watch('./src/assets/**/**', gulp.series('assets'))
-})
+});
 
 // Запуск локального сервера browserSync
 gulp.task('serve', () => {
@@ -78,8 +74,8 @@ gulp.task('serve', () => {
 	})
 
 	browserSync.watch('./docs/**/**').on('change', browserSync.reload)
-})
+});
 
-gulp.task('dev', gulp.parallel('pug', 'styles', 'assets', 'scripts'))
+gulp.task('dev', gulp.parallel('pug', 'styles', 'assets', 'typescript'));
 
-gulp.task('default', gulp.series('clean', 'dev', gulp.parallel('watch', 'serve')))
+gulp.task('default', gulp.series('clean', 'dev', 'browserify', 'cleanModules', gulp.parallel('watch', 'serve')));

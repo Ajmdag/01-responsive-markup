@@ -1,22 +1,62 @@
 let scaleValue = 1
 let brightnessValue = 1
 let prevDiff = -1
-let prevAngle = null
+let prevAngle: number | null = null
+
+interface IelementInfo {
+	xMaxLimit: number;
+	yMaxLimit: number;
+	xMinLimit: number;
+	yMinLimit: number;
+	computedX: number;
+	computedY: number;
+	el: HTMLImageElement | null;
+	oldComputedX: number;
+	oldComputedY: number;
+	initialHeight: number;
+	initialWidth: number;
+	containerHeight: number;
+	containerWidth: number;
+	startedPointDownX: number;
+	startedPointDownY: number;
+}
+
+interface Inode {
+	offsetHeight?: number;
+	offsetWidth?: number;
+}
 
 const eventCache = new Array()
-const elementInfo = new Object()
+
+const elementInfo: IelementInfo = {
+	xMaxLimit: 0,
+	yMaxLimit: 0,
+	xMinLimit: 0,
+	yMinLimit: 0,
+	computedX: 0,
+	computedY: 0,
+	el: null,
+	oldComputedX: 0,
+	oldComputedY: 0,
+	initialHeight: 0,
+	initialWidth: 0,
+	containerHeight: 0,
+	containerWidth: 0,
+	startedPointDownX: 0,
+	startedPointDownY: 0
+}
 
 // Создаем объект для вспомогательных функций
 const helpersFunctions = {
-	getDistaneBetweenTwoDots(x1, y1, x2, y2) {
+	getDistaneBetweenTwoDots(x1: number, y1: number, x2: number, y2: number) {
 		return Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
 	},
 
-	getAngle(x1, y1, x2, y2) {
+	getAngle(x1: number, y1: number, x2: number, y2: number) {
 		return (Math.atan2(y1 - y2, x1 - x2) * 180) / Math.PI
 	},
 
-	setComputedValuesViaLimits(computedX, computedY) {
+	setComputedValuesViaLimits(computedX: number, computedY: number) {
 		if (computedX > elementInfo.xMaxLimit) elementInfo.computedX = elementInfo.xMaxLimit
 		if (computedX < elementInfo.xMinLimit) elementInfo.computedX = elementInfo.xMinLimit
 		if (computedY < elementInfo.yMinLimit) elementInfo.computedY = elementInfo.yMinLimit
@@ -24,10 +64,13 @@ const helpersFunctions = {
 	},
 
 	setLimits() {
-		elementInfo.yMaxLimit = (elementInfo.el.offsetHeight * scaleValue - elementInfo.el.parentNode.offsetHeight) / 4
-		elementInfo.yMinLimit = -(elementInfo.el.offsetHeight * scaleValue - elementInfo.el.parentNode.offsetHeight) / 4
-		elementInfo.xMaxLimit = (elementInfo.el.offsetWidth * scaleValue - elementInfo.el.parentNode.offsetWidth) / 4
-		elementInfo.xMinLimit = -(elementInfo.el.offsetWidth * scaleValue - elementInfo.el.parentNode.offsetWidth) / 4
+		if (elementInfo.el && elementInfo.el.parentNode) {
+			const elParent = elementInfo.el.parentNode as HTMLElement
+			elementInfo.yMaxLimit = (elementInfo.el.offsetHeight * scaleValue - elParent.offsetHeight) / 4
+			elementInfo.yMinLimit = -(elementInfo.el.offsetHeight * scaleValue - elParent.offsetHeight) / 4
+			elementInfo.xMaxLimit = (elementInfo.el.offsetWidth * scaleValue - elParent.offsetWidth) / 4
+			elementInfo.xMinLimit = -(elementInfo.el.offsetWidth * scaleValue - elParent.offsetWidth) / 4
+		}
 	}
 }
 
@@ -46,22 +89,29 @@ function init() {
 	elementInfo.xMaxLimit = 0
 	elementInfo.xMinLimit = 0
 
-	elementInfo.initialWidth = elementInfo.el.offsetWidth
-	elementInfo.initialHeight = elementInfo.el.offsetHeight
+	if (elementInfo.el) {
+		elementInfo.initialWidth = elementInfo.el.offsetWidth
+		elementInfo.initialHeight = elementInfo.el.offsetHeight
+	}
 
-	elementInfo.containerHeight = elementInfo.el.parentNode.offsetHeight
-	elementInfo.containerWidth = elementInfo.el.parentNode.offsetHeight
+	if (elementInfo.el && elementInfo.el.parentNode) {
+		const elParent = elementInfo.el.parentNode as HTMLElement
+		elementInfo.containerHeight = elParent.offsetHeight
+		elementInfo.containerWidth = elParent.offsetHeight
+	}
 
 	// Переопределяем события
-	elementInfo.el.onpointerdown = pointerDownHandler
-	elementInfo.el.onpointermove = pointerMoveHandler
-	elementInfo.el.onpointerup = pointerUpHandler
-	elementInfo.el.onpointercancel = pointerUpHandler
-	elementInfo.el.onpointerout = pointerUpHandler
-	elementInfo.el.onpointerleave = pointerUpHandler
+	if (elementInfo.el) {
+		elementInfo.el.onpointerdown = pointerDownHandler
+		elementInfo.el.onpointermove = pointerMoveHandler
+		elementInfo.el.onpointerup = pointerUpHandler
+		elementInfo.el.onpointercancel = pointerUpHandler
+		elementInfo.el.onpointerout = pointerUpHandler
+		elementInfo.el.onpointerleave = pointerUpHandler
+	}
 }
 
-function pointerDownHandler(event) {
+function pointerDownHandler(event: PointerEvent) {
 	eventCache.push(event)
 
 	// Запишем позицию курсора
@@ -69,7 +119,7 @@ function pointerDownHandler(event) {
 	elementInfo.startedPointDownY = event.clientY
 }
 
-function pointerMoveHandler(event) {
+function pointerMoveHandler(event: PointerEvent) {
 	for (var i = 0; i < eventCache.length; i++) {
 		if (event.pointerId === eventCache[i].pointerId) {
 			eventCache[i] = event

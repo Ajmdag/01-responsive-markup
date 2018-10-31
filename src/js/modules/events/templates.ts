@@ -159,9 +159,9 @@ const eventsObject = {
 	]
 }
 
-const smallTemplate = document.querySelector('.card-template--small')
-const mediumTemplate = document.querySelector('.card-template--medium')
-const largeTemplate = document.querySelector('.card-template--large')
+const smallTemplate: HTMLTemplateElement | null = document.querySelector('.card-template--small')
+const mediumTemplate: HTMLTemplateElement | null  = document.querySelector('.card-template--medium')
+const largeTemplate: HTMLTemplateElement | null  = document.querySelector('.card-template--large')
 
 const contentWrap = document.querySelector('.events-wrap')
 
@@ -171,52 +171,102 @@ for (let i = 0; i < eventsObject.events.length; i++) {
 	// Заполнение карточек содержимым
 	switch (thisItem.size) {
 		case 's':
-			const smallClone = document.importNode(smallTemplate.content, true)
-			smallClone.querySelector('.card__logo').src = `./assets/${thisItem.icon}.svg`
-			smallClone.querySelector('.card__title').innerHTML = thisItem.title
-			smallClone.querySelector('.card__source').innerHTML = thisItem.source
-			smallClone.querySelector('.card__time').innerHTML = thisItem.time
+			let smallClone
+			let smallCloneImage
+			if (smallTemplate) {
+				smallClone = document.importNode(smallTemplate.content, true)
+				smallCloneImage =  smallClone.querySelector('.card__logo')
+			}
+			smallCloneImage.src = `./assets/${thisItem.icon}.svg`
 
-			//Добавление карточки предупреждения
+			let smallCloneTitle
+			let smallCloneSource
+			let smallCloneTime
+			if (smallClone) {
+				smallCloneTitle = smallClone.querySelector('.card__title')
+				smallCloneSource = smallClone.querySelector('.card__source')
+				smallCloneTime = smallClone.querySelector('.card__time')
+			}
+
+			smallCloneTitle.innerHTML = thisItem.title
+			smallCloneSource.innerHTML = thisItem.source
+			smallCloneTime.innerHTML = thisItem.time
+
+			// Добавление карточки предупреждения
+			let smallCloneHeaderWrap
+			if (smallClone) {
+				smallCloneHeaderWrap = smallClone.querySelector('.card__header-wrap')
+			}
+
 			if (thisItem.type === 'critical') {
-				smallClone.querySelector('.card__header-wrap').classList.add('critical')
+				smallCloneHeaderWrap.classList.add('critical')
 			}
 
 			// Добавление описания
 			if (thisItem.description) {
-				smallClone.querySelector('.card__header-wrap').classList.add('have-description')
+				smallCloneHeaderWrap.classList.add('have-description')
 				const smallDescriptionContainer = document.createElement('div')
 				const smallDescriptionParagraph = document.createElement('p')
 				smallDescriptionContainer.appendChild(smallDescriptionParagraph)
 				smallDescriptionParagraph.classList.add('card__description-paragraph', 'card__description-paragraph--small')
 				smallDescriptionContainer.classList.add('card__description', 'card__description--small')
 				smallDescriptionParagraph.innerHTML = thisItem.description
-				smallClone.querySelector('.card').appendChild(smallDescriptionContainer)
+
+				let smallCloneCard
+				if (smallClone) {
+					smallCloneCard = smallClone.querySelector('.card')
+				}
+				smallCloneCard.appendChild(smallDescriptionContainer)
 			}
-			contentWrap.appendChild(smallClone)
+
+			if (contentWrap && smallClone) {
+				contentWrap.appendChild(smallClone)
+			}
 			break
 		case 'm':
-			const mediumClone = document.importNode(mediumTemplate.content, true)
-			mediumClone.querySelector('.card__logo').src = `./assets/${thisItem.icon}.svg`
-			mediumClone.querySelector('.card__title').innerHTML = thisItem.title
-			mediumClone.querySelector('.card__source').innerHTML = thisItem.source
-			mediumClone.querySelector('.card__time').innerHTML = thisItem.time
+			let mediumClone
+			let mediumCloneImage
+			if (mediumTemplate) {
+				mediumClone = document.importNode(mediumTemplate.content, true)
+				mediumCloneImage = mediumClone.querySelector('.card__logo')
+			}
+			mediumCloneImage.src = `./assets/${thisItem.icon}.svg`
+			
+			let mediumCloneTitle
+			let mediumCloneSource
+			let mediumCloneTime
+			let mediumCloneHeaderWrap
+			if (mediumClone) {
+				mediumCloneTitle = mediumClone.querySelector('.card__title')
+				mediumCloneSource = mediumClone.querySelector('.card__source')
+				mediumCloneTime = mediumClone.querySelector('.card__time')
+				mediumCloneHeaderWrap = mediumClone.querySelector('.card__header-wrap')
+			}
+			mediumCloneTitle.innerHTML = thisItem.title
+			mediumCloneSource.innerHTML = thisItem.source
+			mediumCloneTime.innerHTML = thisItem.time
+			console.log('everything is fine')
 
 			//Добавление карточки предупреждения
 			if (thisItem.type === 'critical') {
-				mediumClone.querySelector('.card__header-wrap').classList.add('critical')
+				mediumCloneHeaderWrap.classList.add('critical')
 			}
 
 			// Добавление описания
 			if (thisItem.description) {
-				mediumClone.querySelector('.card__header-wrap').classList.add('have-description')
+				mediumCloneHeaderWrap.classList.add('have-description')
 				const mediumDescriptionContainer = document.createElement('div')
 				const mediumDescriptionParagraph = document.createElement('p')
 				mediumDescriptionContainer.appendChild(mediumDescriptionParagraph)
 				mediumDescriptionParagraph.classList.add('card__description-paragraph', 'card__description-paragraph--medium')
 				mediumDescriptionContainer.classList.add('card__description', 'card__description--medium')
 				mediumDescriptionParagraph.innerHTML = thisItem.description
-				mediumClone.querySelector('.card').appendChild(mediumDescriptionContainer)
+				
+				let mediumCloneCard
+				if (mediumClone) {
+					mediumCloneCard = mediumClone.querySelector('.card')
+				}
+				mediumCloneCard.appendChild(mediumDescriptionContainer)
 			}
 
 			if (thisItem.data) {
@@ -229,7 +279,12 @@ for (let i = 0; i < eventsObject.events.length; i++) {
 					mediumDataHumidity.innerHTML = `Влажность: <b>${thisItem.data.humidity} %<b>`
 					mediumDataAir.appendChild(mediumDataTemperature)
 					mediumDataAir.appendChild(mediumDataHumidity)
-					mediumClone.querySelector('.card__description').appendChild(mediumDataAir)
+
+					let mediumCloneCardDescription
+					if (mediumClone) {
+						mediumCloneCardDescription = mediumClone.querySelector('.card__description')
+					}
+					mediumCloneCardDescription.appendChild(mediumDataAir)
 				}
 
 				if (thisItem.data.buttons) {
@@ -243,10 +298,15 @@ for (let i = 0; i < eventsObject.events.length; i++) {
 					buttonNo.innerHTML = 'Нет'
 					buttonsContainer.appendChild(buttonYes)
 					buttonsContainer.appendChild(buttonNo)
-					mediumClone.querySelector('.card__description').appendChild(buttonsContainer)
+
+					let mediumCloneCardDescription
+					if (mediumClone) {
+						mediumCloneCardDescription = mediumClone.querySelector('.card__description')
+					}
+					mediumCloneCardDescription.appendChild(buttonsContainer)
 				}
 
-				if (thisItem.data.artist) {
+				if (thisItem.data.artist && thisItem.data.track) {
 					const musicPlayer = document.createElement('div')
 					musicPlayer.classList.add('card__data-music-player')
 					musicPlayer.innerHTML = `
@@ -272,62 +332,103 @@ for (let i = 0; i < eventsObject.events.length; i++) {
 										</div>
 									</div>
 								</div>`
-					mediumClone.querySelector('.card__description').appendChild(musicPlayer)
+					let mediumCloneCardDescription
+					if (mediumClone) {
+						mediumCloneCardDescription = mediumClone.querySelector('.card__description')
+					}
+					mediumCloneCardDescription.appendChild(musicPlayer)
 				}
 			}
-			contentWrap.appendChild(mediumClone)
+			if (contentWrap && mediumClone) {
+				contentWrap.appendChild(mediumClone)
+			}
 			break
 		case 'l':
-			const largeClone = document.importNode(largeTemplate.content, true)
-			largeClone.querySelector('.card__logo').src = `./assets/${thisItem.icon}.svg`
-			largeClone.querySelector('.card__title').innerHTML = thisItem.title
-			largeClone.querySelector('.card__source').innerHTML = thisItem.source
-			largeClone.querySelector('.card__time').innerHTML = thisItem.time
+			let largeClone
+			if (largeTemplate) {
+				largeClone = document.importNode(largeTemplate.content, true)
+			}
+			let largeCloneImage
+			if (largeClone) {
+				largeCloneImage = largeClone.querySelector('.card__logo')
+			}
+			largeCloneImage.src = `./assets/${thisItem.icon}.svg`
+			let largeCloneTitle
+			let largeCloneSource
+			let largeCloneTime
+			if (largeClone) {
+				largeCloneTitle = largeClone.querySelector('.card__title')
+				largeCloneSource = largeClone.querySelector('.card__source')
+				largeCloneTime = largeClone.querySelector('.card__time')
+			}
+
+			largeCloneTitle.innerHTML = thisItem.title
+			largeCloneSource.innerHTML = thisItem.source
+			largeCloneTime.innerHTML = thisItem.time
 
 			//Добавление карточки предупреждения
+			let largeCloneHeaderWrap
+
+			if (largeClone) {
+				largeCloneHeaderWrap = largeClone.querySelector('.card__header-wrap')
+			}
 			if (thisItem.type === 'critical') {
-				largeClone.querySelector('.card__header-wrap').classList.add('critical')
+				largeCloneHeaderWrap.classList.add('critical')
 			}
 
 			// Добавление описания
 			if (thisItem.description) {
-				largeClone.querySelector('.card__header-wrap').classList.add('have-description')
+				largeCloneHeaderWrap.classList.add('have-description')
 				const largeDescriptionContainer = document.createElement('div')
 				const largeDescriptionParagraph = document.createElement('p')
 				largeDescriptionContainer.appendChild(largeDescriptionParagraph)
 				largeDescriptionParagraph.classList.add('card__description-paragraph', 'card__description-paragraph--large')
 				largeDescriptionContainer.classList.add('card__description', 'card__description--large')
 				largeDescriptionParagraph.innerHTML = thisItem.description
-				largeClone.querySelector('.card').appendChild(largeDescriptionContainer)
+
+				let largeCloneCard
+				if (largeClone) {
+					largeCloneCard = largeClone.querySelector('.card')
+				}
+				largeCloneCard.appendChild(largeDescriptionContainer)
 			}
 
 			// Добавление картинки
 			let largeDataImage
-			if (thisItem.data.type === 'graph') {
-				largeDataImage = document.createElement('div')
-				largeDataImage.classList.add('card__image-container')
-				largeDataImage.innerHTML = `<img
-				src="./assets/richdata.svg"
-				class="card__image">`
+			if (thisItem.data) {
+				if (thisItem.data.type === 'graph') {
+					largeDataImage = document.createElement('div')
+					largeDataImage.classList.add('card__image-container')
+					largeDataImage.innerHTML = `<img
+					src="./assets/richdata.svg"
+					class="card__image">`
+				}
+
+				if (thisItem.data.image) {
+					largeDataImage = document.createElement('div')
+					largeDataImage.classList.add('card__image-container')
+					largeDataImage.setAttribute('id', 'hoover-container')
+					largeDataImage.innerHTML = `<img
+							class="card__image"
+							id="hoover"
+							touch-action="none"
+							style="touch-action: none;"
+							srcset="./assets/bitmap.png 768w,
+							./assets/bitmap2x.png 1366w,
+							./assets/bitmap3x.png 1920w"
+							src="./assets/bitmap2x.png">`
+				}
 			}
 
-			if (thisItem.data.image) {
-				largeDataImage = document.createElement('div')
-				largeDataImage.classList.add('card__image-container')
-				largeDataImage.setAttribute('id', 'hoover-container')
-				largeDataImage.innerHTML = `<img
-						class="card__image"
-						id="hoover"
-						touch-action="none"
-						style="touch-action: none;"
-						srcset="./assets/bitmap.png 768w,
-						./assets/bitmap2x.png 1366w,
-						./assets/bitmap3x.png 1920w"
-						src="./assets/bitmap2x.png">`
+			let largeCloneCardDescription
+			if (largeClone) {
+				largeCloneCardDescription = largeClone.querySelector('.card__description')
 			}
+			largeCloneCardDescription.appendChild(largeDataImage)
 
-			largeClone.querySelector('.card__description').appendChild(largeDataImage)
-			contentWrap.appendChild(largeClone)
+			if (contentWrap && largeClone) {
+				contentWrap.appendChild(largeClone)
+			}
 			break
 	}
 }
