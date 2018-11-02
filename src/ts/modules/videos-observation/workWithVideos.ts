@@ -3,13 +3,6 @@ const videos = document.querySelectorAll('.videos-wrap__video')
 
 const timeForVideoToShow = 400
 
-// interface IWindow {
-// 	AudioContext: typeof AudioContext
-// 	webkitAudioContext: typeof AudioContext
-// 	mozAudioContext: typeof AudioContext
-// }
-// declare const ddd: IWindow
-
 // Audio API settings
 // @ts-ignore
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)()

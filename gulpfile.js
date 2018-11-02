@@ -43,7 +43,7 @@ gulp.task('clean', () => del('docs'));
 
 // Компиляция ts
 gulp.task('typescript', () => {
-	const tsResult = gulp.src('./src/js/**/*.ts')
+	const tsResult = gulp.src('./src/ts/**/*.ts')
 	.pipe(tsProject());
 
 	return tsResult.js

@@ -38,12 +38,6 @@ if (video1 && video2 && video3 && video4) {
 var videoContainers = document.querySelectorAll('.videos-wrap__video-container');
 var videos = document.querySelectorAll('.videos-wrap__video');
 var timeForVideoToShow = 400;
-// interface IWindow {
-// 	AudioContext: typeof AudioContext
-// 	webkitAudioContext: typeof AudioContext
-// 	mozAudioContext: typeof AudioContext
-// }
-// declare const ddd: IWindow
 // Audio API settings
 // @ts-ignore
 var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
