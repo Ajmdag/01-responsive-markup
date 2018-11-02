@@ -19,9 +19,19 @@ source2.connect(analysers[2]);
 source3.connect(analysers[3]);
 // Canvas settings
 var canvas = document.querySelector('.visualizer');
-var canvasCtx = canvas.getContext('2d');
-var intendedWidth = document.querySelector('.videos-wrap__video-settings').clientWidth;
-canvas.setAttribute('width', intendedWidth);
+var canvasCtx;
+if (canvas) {
+    canvasCtx = canvas.getContext('2d');
+}
+var videosWrapVideoSettings = document.querySelector('.videos-wrap__video-settings');
+var intendedWidth;
+if (videosWrapVideoSettings) {
+    intendedWidth = videosWrapVideoSettings.clientWidth;
+}
+if (canvas) {
+    var tempIndendedWidth = Number(intendedWidth).toString();
+    canvas.setAttribute('width', tempIndendedWidth);
+}
 var allCamerasButton = document.querySelector('.videos-wrap__video-all-cameras');
 var isAllButtonClicked = false;
 // Visualize function
@@ -47,11 +57,12 @@ var visualize = function (analyser) {
             x += barWidth + 1;
             if (isAllButtonClicked) {
                 canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
-                cancelAnimationFrame(drawAlt);
+                cancelAnimationFrame(Number(drawAlt)); // err
             }
         }
     };
     drawAlt();
+    return true;
 };
 var main = function (el, analyserIndex) {
     visualize(analysers[analyserIndex]);
@@ -60,10 +71,13 @@ var brightnessInput = document.querySelector('.videos-wrap__brightness-input');
 var contrastInput = document.querySelector('.videos-wrap__contrast-input');
 var videoSettingsPanel = document.querySelector('.videos-wrap__video-settings');
 var videosSettings = [];
-var pageCenter = {
-    top: document.documentElement.clientHeight / 2,
-    left: document.documentElement.clientWidth / 2
-};
+var pageCenter;
+if (document.documentElement) {
+    pageCenter = {
+        top: document.documentElement.clientHeight / 2,
+        left: document.documentElement.clientWidth / 2
+    };
+}
 var getCenterCoords = function (el) { return ({
     top: el.getBoundingClientRect().top + el.offsetHeight / 2,
     left: el.getBoundingClientRect().left + el.offsetWidth / 2
@@ -75,8 +89,11 @@ videoContainers.forEach(function (item, index) {
         contrast: 1
     };
     function defineFilters() {
-        videosSettings[index].contrast = contrastInput.value / 20;
-        videosSettings[index].brightness = brightnessInput.value / 20;
+        if (contrastInput && brightnessInput) {
+            videosSettings[index].contrast = Number(contrastInput.value) / 20;
+            videosSettings[index].brightness = Number(brightnessInput.value) / 20;
+        }
+        ;
         item.style.filter = "brightness(" + videosSettings[index].brightness + ") contrast(" + videosSettings[index].contrast + ")";
     }
     videosSettings.push(videoInfo);
@@ -84,33 +101,46 @@ videoContainers.forEach(function (item, index) {
         var itemCenter = getCenterCoords(item);
         if (!item.classList.contains('videos-wrap__video-container--open')) {
             isAllButtonClicked = false;
-            video.muted = false;
-            item.style.transform = "translate(" + -(itemCenter.left - pageCenter.left) + "px, " + -(itemCenter.top - pageCenter.top) + "px) scale(" + document
-                .documentElement.clientWidth / item.offsetWidth + ")";
-            contrastInput.value = videosSettings[index].contrast * 20;
-            brightnessInput.value = videosSettings[index].brightness * 20;
+            if (video)
+                video.muted = false;
+            if (document.documentElement) {
+                ;
+                item.style.transform = "translate(" + -(itemCenter.left - pageCenter.left) + "px, " + -(itemCenter.top - pageCenter.top) + "px) scale(" + document.documentElement.clientWidth / item.offsetWidth + ")";
+            }
+            if (contrastInput && brightnessInput) {
+                contrastInput.value = String(videosSettings[index].contrast * 20);
+                brightnessInput.value = String(videosSettings[index].brightness * 20);
+            }
             item.classList.remove('videos-wrap__video-container--overflow-hidden');
             item.classList.add('videos-wrap__video-container--open');
-            contrastInput.addEventListener('input', defineFilters);
-            brightnessInput.addEventListener('input', defineFilters);
-            videoSettingsPanel.classList.remove('videos-wrap__video-settings--hidden');
+            if (contrastInput && brightnessInput && videoSettingsPanel) {
+                contrastInput.addEventListener('input', defineFilters);
+                brightnessInput.addEventListener('input', defineFilters);
+                videoSettingsPanel.classList.remove('videos-wrap__video-settings--hidden');
+            }
             setTimeout(function () {
                 document.body.classList.add('video-open');
             }, timeForVideoToShow - 100);
             main(video, index);
-            allCamerasButton.addEventListener('click', function () {
-                isAllButtonClicked = true;
-                video.muted = true;
-                item.style.transform = 'none';
-                videoSettingsPanel.classList.add('videos-wrap__video-settings--hidden');
-                setTimeout(function () {
-                    item.classList.add('videos-wrap__video-container--overflow-hidden');
-                }, timeForVideoToShow);
-                contrastInput.removeEventListener('input', defineFilters);
-                brightnessInput.removeEventListener('input', defineFilters);
-                item.classList.remove('videos-wrap__video-container--open');
-                document.body.classList.remove('video-open');
-            });
+            if (allCamerasButton && video) {
+                allCamerasButton.addEventListener('click', function () {
+                    isAllButtonClicked = true;
+                    video.muted = true;
+                    item.style.transform = 'none';
+                    if (videoSettingsPanel) {
+                        videoSettingsPanel.classList.add('videos-wrap__video-settings--hidden');
+                    }
+                    setTimeout(function () {
+                        item.classList.add('videos-wrap__video-container--overflow-hidden');
+                    }, timeForVideoToShow);
+                    if (contrastInput && brightnessInput) {
+                        contrastInput.removeEventListener('input', defineFilters);
+                        brightnessInput.removeEventListener('input', defineFilters);
+                    }
+                    item.classList.remove('videos-wrap__video-container--open');
+                    document.body.classList.remove('video-open');
+                });
+            }
         }
     });
 });

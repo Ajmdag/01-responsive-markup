@@ -3,6 +3,13 @@ const videos = document.querySelectorAll('.videos-wrap__video')
 
 const timeForVideoToShow = 400
 
+interface IWindow {
+	AudioContext: typeof AudioContext
+	webkitAudioContext: typeof AudioContext
+	mozAudioContext: typeof AudioContext
+}
+declare const window: IWindow
+
 // Audio API settings
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
 const analysers = [audioCtx.createAnalyser(), audioCtx.createAnalyser(), audioCtx.createAnalyser(), audioCtx.createAnalyser()]
@@ -21,16 +28,28 @@ source2.connect(analysers[2])
 source3.connect(analysers[3])
 
 // Canvas settings
-const canvas = document.querySelector('.visualizer')
-const canvasCtx = canvas.getContext('2d')
-const intendedWidth = document.querySelector('.videos-wrap__video-settings').clientWidth
-canvas.setAttribute('width', intendedWidth)
+const canvas = <HTMLCanvasElement>document.querySelector('.visualizer')
+let canvasCtx: CanvasRenderingContext2D
+if (canvas) {
+	canvasCtx = <CanvasRenderingContext2D>canvas.getContext('2d')
+}
+const videosWrapVideoSettings = document.querySelector('.videos-wrap__video-settings')
+
+let intendedWidth
+if (videosWrapVideoSettings) {
+	intendedWidth = videosWrapVideoSettings.clientWidth
+}
+
+if (canvas) {
+	let tempIndendedWidth = Number(intendedWidth).toString()
+	canvas.setAttribute('width', tempIndendedWidth)
+}
 
 const allCamerasButton = document.querySelector('.videos-wrap__video-all-cameras')
 let isAllButtonClicked = false
 
 // Visualize function
-const visualize = (analyser) => {
+const visualize = (analyser: AnalyserNode) => {
 	const WIDTH = canvas.width
 	const HEIGHT = canvas.height
 
@@ -61,35 +80,49 @@ const visualize = (analyser) => {
 			x += barWidth + 1
 			if (isAllButtonClicked) {
 				canvasCtx.clearRect(0, 0, WIDTH, HEIGHT)
-				cancelAnimationFrame(drawAlt)
+				cancelAnimationFrame(Number(drawAlt)) // err
 			}
 		}
 	}
 
 	drawAlt()
+	return true
 }
 
-const main = (el, analyserIndex) => {
+const main = (el: HTMLElement, analyserIndex: number) => {
 	visualize(analysers[analyserIndex])
 }
 
-const brightnessInput = document.querySelector('.videos-wrap__brightness-input')
-const contrastInput = document.querySelector('.videos-wrap__contrast-input')
+const brightnessInput: HTMLInputElement | null = document.querySelector('.videos-wrap__brightness-input')
+const contrastInput: HTMLInputElement | null = document.querySelector('.videos-wrap__contrast-input')
 const videoSettingsPanel = document.querySelector('.videos-wrap__video-settings')
 
-const videosSettings = []
-
-const pageCenter = {
-	top: document.documentElement.clientHeight / 2,
-	left: document.documentElement.clientWidth / 2
+interface IvideosSettings {
+	contrast: number
+	brightness: number
 }
 
-const getCenterCoords = (el) => ({
+const videosSettings: IvideosSettings[] = []
+
+interface IPageCenter {
+	left: number
+	top: number
+}
+
+let pageCenter: IPageCenter
+if (document.documentElement) {
+	pageCenter = {
+		top: document.documentElement.clientHeight / 2,
+		left: document.documentElement.clientWidth / 2
+	}
+}
+
+const getCenterCoords = (el: HTMLElement) => ({
 	top: el.getBoundingClientRect().top + el.offsetHeight / 2,
 	left: el.getBoundingClientRect().left + el.offsetWidth / 2
 })
 
-videoContainers.forEach((item, index) => {
+videoContainers.forEach((item, index: number) => {
 	const video = item.querySelector('video')
 
 	const videoInfo = {
@@ -98,55 +131,69 @@ videoContainers.forEach((item, index) => {
 	}
 
 	function defineFilters() {
-		videosSettings[index].contrast = contrastInput.value / 20
-		videosSettings[index].brightness = brightnessInput.value / 20
-		item.style.filter = `brightness(${videosSettings[index].brightness}) contrast(${videosSettings[index].contrast})`
+		if (contrastInput && brightnessInput) {
+			videosSettings[index].contrast = Number(contrastInput.value) / 20
+			videosSettings[index].brightness = Number(brightnessInput.value) / 20
+		}
+		;(<HTMLDivElement>item).style.filter = `brightness(${videosSettings[index].brightness}) contrast(${videosSettings[index].contrast})`
 	}
 
 	videosSettings.push(videoInfo)
 
 	item.addEventListener('click', () => {
-		const itemCenter = getCenterCoords(item)
+		const itemCenter = getCenterCoords(<HTMLElement>item)
 		if (!item.classList.contains('videos-wrap__video-container--open')) {
 			isAllButtonClicked = false
 
-			video.muted = false
+			if (video) video.muted = false
 
-			item.style.transform = `translate(${-(itemCenter.left - pageCenter.left)}px, ${-(itemCenter.top - pageCenter.top)}px) scale(${document
-				.documentElement.clientWidth / item.offsetWidth})`
+			if (document.documentElement) {
+				;(<HTMLDivElement>item).style.transform = `translate(${-(itemCenter.left - pageCenter.left)}px, ${-(
+					itemCenter.top - pageCenter.top
+				)}px) scale(${document.documentElement.clientWidth / (<HTMLDivElement>item).offsetWidth})`
+			}
 
-			contrastInput.value = videosSettings[index].contrast * 20
-			brightnessInput.value = videosSettings[index].brightness * 20
+			if (contrastInput && brightnessInput) {
+				contrastInput.value = String(videosSettings[index].contrast * 20)
+				brightnessInput.value = String(videosSettings[index].brightness * 20)
+			}
 
 			item.classList.remove('videos-wrap__video-container--overflow-hidden')
 			item.classList.add('videos-wrap__video-container--open')
 
-			contrastInput.addEventListener('input', defineFilters)
-			brightnessInput.addEventListener('input', defineFilters)
-			videoSettingsPanel.classList.remove('videos-wrap__video-settings--hidden')
+			if (contrastInput && brightnessInput && videoSettingsPanel) {
+				contrastInput.addEventListener('input', defineFilters)
+				brightnessInput.addEventListener('input', defineFilters)
+				videoSettingsPanel.classList.remove('videos-wrap__video-settings--hidden')
+			}
 			setTimeout(() => {
 				document.body.classList.add('video-open')
 			}, timeForVideoToShow - 100)
-			main(video, index)
+			main(<HTMLVideoElement>video, index)
 
-			allCamerasButton.addEventListener('click', () => {
-				isAllButtonClicked = true
+			if (allCamerasButton && video) {
+				allCamerasButton.addEventListener('click', () => {
+					isAllButtonClicked = true
 
-				video.muted = true
+					video.muted = true
+					;(<HTMLDivElement>item).style.transform = 'none'
 
-				item.style.transform = 'none'
+					if (videoSettingsPanel) {
+						videoSettingsPanel.classList.add('videos-wrap__video-settings--hidden')
+					}
+					setTimeout(() => {
+						item.classList.add('videos-wrap__video-container--overflow-hidden')
+					}, timeForVideoToShow)
 
-				videoSettingsPanel.classList.add('videos-wrap__video-settings--hidden')
-				setTimeout(() => {
-					item.classList.add('videos-wrap__video-container--overflow-hidden')
-				}, timeForVideoToShow)
+					if (contrastInput && brightnessInput) {
+						contrastInput.removeEventListener('input', defineFilters)
+						brightnessInput.removeEventListener('input', defineFilters)
+					}
 
-				contrastInput.removeEventListener('input', defineFilters)
-				brightnessInput.removeEventListener('input', defineFilters)
-
-				item.classList.remove('videos-wrap__video-container--open')
-				document.body.classList.remove('video-open')
-			})
+					item.classList.remove('videos-wrap__video-container--open')
+					document.body.classList.remove('video-open')
+				})
+			}
 		}
 	})
 })
