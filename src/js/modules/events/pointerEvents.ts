@@ -4,26 +4,26 @@ let prevDiff = -1
 let prevAngle: number | null = null
 
 interface IelementInfo {
-	xMaxLimit: number;
-	yMaxLimit: number;
-	xMinLimit: number;
-	yMinLimit: number;
-	computedX: number;
-	computedY: number;
-	el: HTMLImageElement | null;
-	oldComputedX: number;
-	oldComputedY: number;
-	initialHeight: number;
-	initialWidth: number;
-	containerHeight: number;
-	containerWidth: number;
-	startedPointDownX: number;
-	startedPointDownY: number;
+	xMaxLimit: number
+	yMaxLimit: number
+	xMinLimit: number
+	yMinLimit: number
+	computedX: number
+	computedY: number
+	el: HTMLImageElement | null
+	oldComputedX: number
+	oldComputedY: number
+	initialHeight: number
+	initialWidth: number
+	containerHeight: number
+	containerWidth: number
+	startedPointDownX: number
+	startedPointDownY: number
 }
 
 interface Inode {
-	offsetHeight?: number;
-	offsetWidth?: number;
+	offsetHeight?: number
+	offsetWidth?: number
 }
 
 const eventCache = new Array()
@@ -119,6 +119,10 @@ function pointerDownHandler(event: PointerEvent) {
 	elementInfo.startedPointDownY = event.clientY
 }
 
+interface IeventTarget {
+	style: string
+}
+
 function pointerMoveHandler(event: PointerEvent) {
 	for (var i = 0; i < eventCache.length; i++) {
 		if (event.pointerId === eventCache[i].pointerId) {
@@ -133,7 +137,11 @@ function pointerMoveHandler(event: PointerEvent) {
 
 		helpersFunctions.setComputedValuesViaLimits(elementInfo.computedX, elementInfo.computedY)
 
-		event.target.style.transform = `scale(${scaleValue}) translate(${elementInfo.computedX}px, ${elementInfo.computedY}px)`
+		if (event.target) {
+			;(<HTMLDivElement>event.target).style.transform = `scale(${scaleValue}) translate(${elementInfo.computedX}px, ${
+				elementInfo.computedY
+			}px)`
+		}
 	}
 
 	if (eventCache.length === 2) {
@@ -148,11 +156,15 @@ function pointerMoveHandler(event: PointerEvent) {
 			const increaseOn = 0.01
 			if (curAngle > prevAngle) {
 				brightnessValue += increaseOn
-				elementInfo.el.style.filter = `brightness(${brightnessValue})`
+				if (elementInfo.el) {
+					elementInfo.el.style.filter = `brightness(${brightnessValue})`
+				}
 			}
 			if (curAngle < prevAngle) {
 				brightnessValue -= increaseOn
-				elementInfo.el.style.filter = `brightness(${brightnessValue})`
+				if (elementInfo.el) {
+					elementInfo.el.style.filter = `brightness(${brightnessValue})`
+				}
 			}
 		}
 		prevAngle = curAngle
@@ -169,7 +181,9 @@ function pointerMoveHandler(event: PointerEvent) {
 				helpersFunctions.setLimits()
 				helpersFunctions.setComputedValuesViaLimits(elementInfo.computedX, elementInfo.computedY)
 
-				elementInfo.el.style.transform = `scale(${scaleValue}) translate(${elementInfo.computedX}px, ${elementInfo.computedY}px)`
+				if (elementInfo.el) {
+					elementInfo.el.style.transform = `scale(${scaleValue}) translate(${elementInfo.computedX}px, ${elementInfo.computedY}px)`
+				}
 			}
 
 			if (curDiff < prevDiff) {
@@ -180,7 +194,9 @@ function pointerMoveHandler(event: PointerEvent) {
 				helpersFunctions.setLimits()
 				helpersFunctions.setComputedValuesViaLimits(elementInfo.computedX, elementInfo.computedY)
 
-				elementInfo.el.style.transform = `scale(${scaleValue}) translate(${elementInfo.computedX}px, ${elementInfo.computedY}px)`
+				if (elementInfo.el) {
+					elementInfo.el.style.transform = `scale(${scaleValue}) translate(${elementInfo.computedX}px, ${elementInfo.computedY}px)`
+				}
 			}
 		}
 
@@ -188,7 +204,7 @@ function pointerMoveHandler(event: PointerEvent) {
 	}
 }
 
-function pointerUpHandler(event) {
+function pointerUpHandler(event: PointerEvent) {
 	elementInfo.oldComputedX = elementInfo.computedX
 	elementInfo.oldComputedY = elementInfo.computedY
 
@@ -197,7 +213,7 @@ function pointerUpHandler(event) {
 	if (eventCache.length < 2) prevDiff = -1
 }
 
-function removeEvent(event) {
+function removeEvent(event: PointerEvent) {
 	for (let i = 0; i < eventCache.length; i++) {
 		if (eventCache[i].pointerId == event.pointerId) {
 			eventCache.splice(i, 1)
@@ -206,6 +222,4 @@ function removeEvent(event) {
 	}
 }
 
-if ('ontouchstart' in document.documentElement) {
-	document.body.onload = init()
-}
+init()

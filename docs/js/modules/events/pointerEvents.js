@@ -96,7 +96,10 @@ function pointerMoveHandler(event) {
         elementInfo.computedX = event.clientX - elementInfo.startedPointDownX + elementInfo.oldComputedX;
         elementInfo.computedY = event.clientY - elementInfo.startedPointDownY + elementInfo.oldComputedY;
         helpersFunctions.setComputedValuesViaLimits(elementInfo.computedX, elementInfo.computedY);
-        event.target.style.transform = "scale(" + scaleValue + ") translate(" + elementInfo.computedX + "px, " + elementInfo.computedY + "px)";
+        if (event.target) {
+            ;
+            event.target.style.transform = "scale(" + scaleValue + ") translate(" + elementInfo.computedX + "px, " + elementInfo.computedY + "px)";
+        }
     }
     if (eventCache.length === 2) {
         var x1 = eventCache[0].clientX;
@@ -108,11 +111,15 @@ function pointerMoveHandler(event) {
             var increaseOn = 0.01;
             if (curAngle > prevAngle) {
                 brightnessValue += increaseOn;
-                elementInfo.el.style.filter = "brightness(" + brightnessValue + ")";
+                if (elementInfo.el) {
+                    elementInfo.el.style.filter = "brightness(" + brightnessValue + ")";
+                }
             }
             if (curAngle < prevAngle) {
                 brightnessValue -= increaseOn;
-                elementInfo.el.style.filter = "brightness(" + brightnessValue + ")";
+                if (elementInfo.el) {
+                    elementInfo.el.style.filter = "brightness(" + brightnessValue + ")";
+                }
             }
         }
         prevAngle = curAngle;
@@ -127,7 +134,9 @@ function pointerMoveHandler(event) {
                     scaleValue = 2;
                 helpersFunctions.setLimits();
                 helpersFunctions.setComputedValuesViaLimits(elementInfo.computedX, elementInfo.computedY);
-                elementInfo.el.style.transform = "scale(" + scaleValue + ") translate(" + elementInfo.computedX + "px, " + elementInfo.computedY + "px)";
+                if (elementInfo.el) {
+                    elementInfo.el.style.transform = "scale(" + scaleValue + ") translate(" + elementInfo.computedX + "px, " + elementInfo.computedY + "px)";
+                }
             }
             if (curDiff < prevDiff) {
                 // ZOOM OUT
@@ -137,7 +146,9 @@ function pointerMoveHandler(event) {
                     scaleValue = 1;
                 helpersFunctions.setLimits();
                 helpersFunctions.setComputedValuesViaLimits(elementInfo.computedX, elementInfo.computedY);
-                elementInfo.el.style.transform = "scale(" + scaleValue + ") translate(" + elementInfo.computedX + "px, " + elementInfo.computedY + "px)";
+                if (elementInfo.el) {
+                    elementInfo.el.style.transform = "scale(" + scaleValue + ") translate(" + elementInfo.computedX + "px, " + elementInfo.computedY + "px)";
+                }
             }
         }
         prevDiff = curDiff;
@@ -158,6 +169,4 @@ function removeEvent(event) {
         }
     }
 }
-if ('ontouchstart' in document.documentElement) {
-    document.body.onload = init();
-}
+init();
