@@ -1,10 +1,15 @@
 const videoContainers = document.querySelectorAll('.videos-wrap__video-container')
-const videos = document.querySelectorAll('.videos-wrap__video')
+const videos = document.querySelectorAll<HTMLMediaElement>('.videos-wrap__video')
+
+interface Window {
+	AudioContext: typeof AudioContext;
+	webkitAudioContext: typeof AudioContext;
+}
 
 const timeForVideoToShow = 400
 
 // Audio API settings
-// @ts-ignore
+
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
 const analysers = [audioCtx.createAnalyser(), audioCtx.createAnalyser(), audioCtx.createAnalyser(), audioCtx.createAnalyser()]
 analysers[0].connect(audioCtx.destination)
@@ -22,7 +27,7 @@ source2.connect(analysers[2])
 source3.connect(analysers[3])
 
 // Canvas settings
-const canvas = <HTMLCanvasElement>document.querySelector('.visualizer')
+const canvas = document.querySelector<HTMLCanvasElement>('.visualizer')
 let canvasCtx: CanvasRenderingContext2D
 if (canvas) {
 	canvasCtx = <CanvasRenderingContext2D>canvas.getContext('2d')
@@ -44,8 +49,9 @@ let isAllButtonClicked = false
 
 // Visualize function
 const visualize = (analyser: AnalyserNode) => {
-	const WIDTH = canvas.width
-	const HEIGHT = canvas.height
+
+	const WIDTH = Number(canvas ? canvas.width : undefined)
+	const HEIGHT = Number(canvas ? canvas.height : undefined)
 
 	analyser.fftSize = 256
 	const bufferLengthAlt = analyser.frequencyBinCount
