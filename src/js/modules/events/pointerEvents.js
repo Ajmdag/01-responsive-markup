@@ -3,8 +3,27 @@ let brightnessValue = 1
 let prevDiff = -1
 let prevAngle = null
 
-const eventCache = new Array()
-const elementInfo = new Object()
+const eventCache = []
+const elementInfo = {}
+
+function removeEvent(event) {
+	for (let i = 0; i < eventCache.length; i += 1) {
+		if (eventCache[i].pointerId === event.pointerId) {
+			eventCache.splice(i, 1)
+			break
+		}
+	}
+}
+
+function pointerUpHandler(event) {
+	elementInfo.oldComputedX = elementInfo.computedX
+	elementInfo.oldComputedY = elementInfo.computedY
+
+	removeEvent(event)
+
+	if (eventCache.length < 2) prevDiff = -1
+}
+
 
 // Создаем объект для вспомогательных функций
 const helpersFunctions = {
@@ -31,35 +50,6 @@ const helpersFunctions = {
 	}
 }
 
-function init() {
-	elementInfo.el = document.querySelector('#hoover')
-
-	// Первичные значения
-	elementInfo.oldComputedX = 0
-	elementInfo.oldComputedY = 0
-
-	elementInfo.computedX = 0
-	elementInfo.computedY = 0
-
-	elementInfo.yMaxLimit = 0
-	elementInfo.yMinLimit = 0
-	elementInfo.xMaxLimit = 0
-	elementInfo.xMinLimit = 0
-
-	elementInfo.initialWidth = elementInfo.el.offsetWidth
-	elementInfo.initialHeight = elementInfo.el.offsetHeight
-
-	elementInfo.containerHeight = elementInfo.el.parentNode.offsetHeight
-	elementInfo.containerWidth = elementInfo.el.parentNode.offsetHeight
-
-	// Переопределяем события
-	elementInfo.el.onpointerdown = pointerDownHandler
-	elementInfo.el.onpointermove = pointerMoveHandler
-	elementInfo.el.onpointerup = pointerUpHandler
-	elementInfo.el.onpointercancel = pointerUpHandler
-	elementInfo.el.onpointerout = pointerUpHandler
-	elementInfo.el.onpointerleave = pointerUpHandler
-}
 
 function pointerDownHandler(event) {
 	eventCache.push(event)
@@ -70,7 +60,7 @@ function pointerDownHandler(event) {
 }
 
 function pointerMoveHandler(event) {
-	for (var i = 0; i < eventCache.length; i++) {
+	for (let i = 0; i < eventCache.length; i += 1) {
 		if (event.pointerId === eventCache[i].pointerId) {
 			eventCache[i] = event
 			break
@@ -138,22 +128,34 @@ function pointerMoveHandler(event) {
 	}
 }
 
-function pointerUpHandler(event) {
-	elementInfo.oldComputedX = elementInfo.computedX
-	elementInfo.oldComputedY = elementInfo.computedY
+function init() {
+	elementInfo.el = document.querySelector('#hoover')
 
-	removeEvent(event)
+	// Первичные значения
+	elementInfo.oldComputedX = 0
+	elementInfo.oldComputedY = 0
 
-	if (eventCache.length < 2) prevDiff = -1
-}
+	elementInfo.computedX = 0
+	elementInfo.computedY = 0
 
-function removeEvent(event) {
-	for (let i = 0; i < eventCache.length; i++) {
-		if (eventCache[i].pointerId == event.pointerId) {
-			eventCache.splice(i, 1)
-			break
-		}
-	}
+	elementInfo.yMaxLimit = 0
+	elementInfo.yMinLimit = 0
+	elementInfo.xMaxLimit = 0
+	elementInfo.xMinLimit = 0
+
+	elementInfo.initialWidth = elementInfo.el.offsetWidth
+	elementInfo.initialHeight = elementInfo.el.offsetHeight
+
+	elementInfo.containerHeight = elementInfo.el.parentNode.offsetHeight
+	elementInfo.containerWidth = elementInfo.el.parentNode.offsetHeight
+
+	// Переопределяем события
+	elementInfo.el.onpointerdown = pointerDownHandler
+	elementInfo.el.onpointermove = pointerMoveHandler
+	elementInfo.el.onpointerup = pointerUpHandler
+	elementInfo.el.onpointercancel = pointerUpHandler
+	elementInfo.el.onpointerout = pointerUpHandler
+	elementInfo.el.onpointerleave = pointerUpHandler
 }
 
 if ('ontouchstart' in document.documentElement) {

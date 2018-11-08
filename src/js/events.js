@@ -1,2 +1,2 @@
-import {} from './modules/events/templates'
-import {} from './modules/events/pointerEvents'
+import { } from './modules/events/templates'
+import { } from './modules/events/pointerEvents'

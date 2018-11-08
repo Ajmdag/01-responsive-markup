@@ -165,7 +165,7 @@ const largeTemplate = document.querySelector('.card-template--large')
 
 const contentWrap = document.querySelector('.events-wrap')
 
-for (let i = 0; i < eventsObject.events.length; i++) {
+for (let i = 0; i < eventsObject.events.length; i += 1) {
 	const thisItem = eventsObject.events[i]
 
 	// Заполнение карточек содержимым
@@ -177,7 +177,7 @@ for (let i = 0; i < eventsObject.events.length; i++) {
 			smallClone.querySelector('.card__source').innerHTML = thisItem.source
 			smallClone.querySelector('.card__time').innerHTML = thisItem.time
 
-			//Добавление карточки предупреждения
+			// Добавление карточки предупреждения
 			if (thisItem.type === 'critical') {
 				smallClone.querySelector('.card__header-wrap').classList.add('critical')
 			}
@@ -202,7 +202,7 @@ for (let i = 0; i < eventsObject.events.length; i++) {
 			mediumClone.querySelector('.card__source').innerHTML = thisItem.source
 			mediumClone.querySelector('.card__time').innerHTML = thisItem.time
 
-			//Добавление карточки предупреждения
+			// Добавление карточки предупреждения
 			if (thisItem.type === 'critical') {
 				mediumClone.querySelector('.card__header-wrap').classList.add('critical')
 			}
@@ -284,7 +284,7 @@ for (let i = 0; i < eventsObject.events.length; i++) {
 			largeClone.querySelector('.card__source').innerHTML = thisItem.source
 			largeClone.querySelector('.card__time').innerHTML = thisItem.time
 
-			//Добавление карточки предупреждения
+			// Добавление карточки предупреждения
 			if (thisItem.type === 'critical') {
 				largeClone.querySelector('.card__header-wrap').classList.add('critical')
 			}
@@ -329,5 +329,6 @@ for (let i = 0; i < eventsObject.events.length; i++) {
 			largeClone.querySelector('.card__description').appendChild(largeDataImage)
 			contentWrap.appendChild(largeClone)
 			break
+		default: console.error('Unexpected size of card');
 	}
 }
