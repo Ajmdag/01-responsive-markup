@@ -42,7 +42,7 @@ gulp.task('clean', () => del('docs'))
 // Компиляция JS
 gulp.task('scripts', () =>
 	gulp
-		.src('./src/js/*.js')
+		.src('./src/js/**/*.js')
 		.pipe(
 			babel({
 				presets: ['env']
