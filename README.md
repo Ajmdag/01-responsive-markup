@@ -11,6 +11,24 @@ gulp
 
 Откроется вкладка в браузере на http://localhost:3000/
 
+## Для проверяющего ДЗ «Архитектура»
+### Запуск
+```
+git clone https://github.com/Ajmdag/01-responsive-markup.git
+cd 01-responsive-markup
+npm install
+gulp
+```
+Перейти на вкладку "Видеонаблюдение"
+
+Затем в другом окне терминала запустить видеопотоки
+```
+git clone https://github.com/mad-gooze/shri-2018-2-multimedia-homework.git
+cd shri-2018-2-multimedia-homework
+npm i
+npm start
+```
+Появятся видео на вкладке "Видеонаблюдение"
 
 ## Для проверяющего ДЗ №3 - «Мультимедиа»
 Выполнены все задания, кроме бонусных.
