@@ -32,6 +32,6 @@
 		"gulp-sourcemaps": "^2.6.4"
 	},
 	"dependencies": {
-		"flux-framework": "github:ajmdag/flux-framework"
+		"flux-framework": "^1.0.0"
 	}
 }
